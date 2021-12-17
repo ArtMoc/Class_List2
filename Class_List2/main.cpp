@@ -76,10 +76,11 @@ public:
 			for (int i = 0; i < size - Index - 1; i++)Temp = Temp->pPrev;
 		}
 		Element* New = new Element(Data);
-		New->pNext = Temp;
-		New->pPrev = Temp->pPrev;
-		Temp->pPrev->pNext = New;
-		Temp->pPrev = New;
+		//New->pNext = Temp;
+		//New->pPrev = Temp->pPrev;
+		//Temp->pPrev->pNext = New;
+		//Temp->pPrev = New;
+		Temp->pPrev = Temp->pPrev->pNext = new Element(Data, Temp, Temp->pPrev);
 		size++;
 	}
 
@@ -105,6 +106,30 @@ public:
 		Tail = Tail->pPrev;
 		delete Tail->pNext;
 		Tail->pNext = nullptr;
+		size--;
+	}
+	void erase(int Index)
+	{
+		if (Index >= size)
+		{
+			cout << "Error: Выход за переделы списка!" << endl;
+			return;
+		}
+		Element* Temp;
+		if (Index < size / 2)
+		{
+			Temp = Head;
+			for (int i = 0; i < Index; i++)Temp = Temp->pNext;
+		}
+		else
+		{
+			Temp = Tail;
+			for (int i = 0; i < size - Index - 1; i++)Temp = Temp->pPrev;
+		}
+		Element* Erased = Temp;
+		Temp->pNext->pPrev = Temp->pPrev;
+		Temp->pPrev->pNext = Temp->pNext;
+		delete Temp;
 		size--;
 	}
 
@@ -150,6 +175,9 @@ void main()
 	cout << "Введите индекс добавляемого элемента: ";cin >> index;
 	cout << "Введите значение добавляемого элемента: ";cin >> value;
 	list.insert(value, index);
+	list.print();
+	cout << "Введите индекс удаляемого элемента: ";cin >> index;
+	list.erase(index);
 	list.print();
 	list.print_reverse();
 
