@@ -33,11 +33,15 @@ class List
 	public:
 		BaseIterator(Element* Temp) :Temp(Temp)
 		{
+#ifdef DEBUG
 			cout << "I_Constructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		~BaseIterator()
 		{
+#ifdef DEBUG
 			cout << "I_Destructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		bool operator==(const BaseIterator& other)const
 		{
@@ -60,11 +64,15 @@ public:
 	public:
 		ConstIterator(Element* Temp) :BaseIterator(Temp)
 		{
+#ifdef DEBUG
 			cout << "I_Constructor:\t" << this << endl;
+#endif // DEBUG
 		}
 		~ConstIterator()
 		{
+#ifdef DEBUG
 			cout << "I_Destructor:\t" << this << endl;
+#endif // DEBUG
 		}
 
 		ConstIterator& operator++()
@@ -172,11 +180,11 @@ public:
 	{
 		return nullptr;
 	}
-	ConstIterator cbegin()
+	ConstIterator cbegin()const
 	{
 		return Head;
 	}
-	ConstIterator cend()
+	ConstIterator cend()const
 	{
 		return nullptr;
 	}
@@ -188,11 +196,11 @@ public:
 	{
 		return nullptr;
 	}
-	ConstReverseIterator crbegin()
+	ConstReverseIterator crbegin()const
 	{
 		return Tail;
 	}
-	ConstReverseIterator crend()
+	ConstReverseIterator crend()const
 	{
 		return nullptr;
 	}
@@ -353,6 +361,24 @@ public:
 	}
 };
 
+void print_list(const List& list)
+{
+	for (List::ConstIterator it = list.cbegin(); it != list.cend(); ++it)
+	{
+		//*it *= 123;  // It works
+		cout << *it << tab;
+	}
+	cout << endl;
+}
+void reverse_print_lis(const List& list)
+{
+	for (List::ConstReverseIterator rit = list.crbegin(); rit != list.crend(); ++rit)
+	{
+		cout << *rit << tab;
+	}
+	cout << endl;
+}
+
 //#define BASE_CHECK
 
 void main()
@@ -398,4 +424,6 @@ void main()
 	}
 	cout << endl;
 
+	reverse_print_lis(list1);
+	print_list(list1);
 }
